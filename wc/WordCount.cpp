@@ -6,7 +6,8 @@
 
 using namespace std;
 
-WordCount::WordCount(const char *path) : m_Path(path)
+WordCount::WordCount(std::string path) 
+	: m_Path(path), blankCount(0), codeCount(0), commentaryCount(0)
 {
 	//根据路径打开文件
 	m_File.open(m_Path, ios::in);
@@ -22,7 +23,7 @@ WordCount::WordCount(const char *path) : m_Path(path)
 		//这里需要抛出异常否则会卡死
 		throw 1;
 	}
-	
+
 }
 
 WordCount::~WordCount()
@@ -43,6 +44,9 @@ int WordCount::CountCharacters()
 		count++;
 	}
 
+	//回到文件头，防止下一次调用的时候无法读取该文件
+	m_File.clear();
+	m_File.seekg(0);
 	return count;
 }
 
@@ -58,6 +62,9 @@ int WordCount::CountWords()
 		count++;
 	}
 
+	//回到文件头，防止下一次调用的时候无法读取该文件
+	m_File.clear();
+	m_File.seekg(0);
 	return count;
 }
 
@@ -73,6 +80,9 @@ int WordCount::CountLines()
 		count++;
 	}
 
+	//回到文件头，防止下一次调用的时候无法读取该文件
+	m_File.clear();
+	m_File.seekg(0);
 	return count;
 }
 
@@ -80,9 +90,6 @@ int WordCount::CountDetails()
 {
 	string str;				//用于保存提取出的行
 
-	int blankCount = 0;		//空白行
-	int codeCount = 0;		//代码行
-	int commentaryCount = 0;//注释行
 	int count = 0;			//总行数
 
 	while (!m_File.eof())	//遍历文件
@@ -136,5 +143,8 @@ int WordCount::CountDetails()
 	cout << "文件" << m_Path << "的代码行数:" << codeCount << endl;
 	cout << "文件" << m_Path << "的注释行数:" << commentaryCount << endl;
 
+	//回到文件头，防止下一次调用的时候无法读取该文件
+	m_File.clear();
+	m_File.seekg(0);
 	return count;
 }
