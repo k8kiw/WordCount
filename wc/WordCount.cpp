@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <regex>
 
 using namespace std;
 
@@ -44,7 +45,7 @@ int WordCount::CountCharacters()
 		count++;
 	}
 
-	//回到文件头，防止下一次调用的时候无法读取该文件
+	//回到文件头，准备下一次使用
 	m_File.clear();
 	m_File.seekg(0);
 	return count;
@@ -59,7 +60,10 @@ int WordCount::CountWords()
 	{
 		//每读取一个单词就计数一次
 		m_File >> str;		//iostream的运算符默认忽略空格
-		count++;
+		if (regex_search(str, regex("[a-zA-Z]+\\b")))		//正则表达式匹配
+		{
+			count++;
+		}
 	}
 
 	//回到文件头，防止下一次调用的时候无法读取该文件
