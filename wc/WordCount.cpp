@@ -107,7 +107,7 @@ int WordCount::CountDetails()
 		int flag = 0;			//标记
 		for (ite = str.begin(); ite != str.end(); ite++)
 		{
-			//空白字符 or 仅含有一个字符 --> 空行
+			//空白字符 or 仅含有{  --> 空行
 			//flag = 0	  flag = 1
 			//否则为字符行 若为//..... --> 注释行
 			//			   否则为代码行
@@ -117,7 +117,10 @@ int WordCount::CountDetails()
 			}
 			else if (flag == 0 && isgraph(*ite))	//遇到第一个字符
 			{
-				flag = 1;
+				if ((*ite) == '{' || (*ite) == '}')	//大括号标记为1否则为代码行
+					flag = 1;
+				else
+					flag = 2;
 			}
 			else if (flag == 1 && isspace(*ite))	//该字符后都为空白
 			{
@@ -125,12 +128,13 @@ int WordCount::CountDetails()
 			}
 			else if (flag == 1 && isgraph(*ite))	//第二个字符
 			{
+				//如果是注释行 无论有没有大括号 第二个字符都为/
 				if (*ite == '/')
 					flag = 3;
 				else
 					flag = 2;
 			}
-
+			
 		}	//for
 
 		//根据flag的情况进行计数
