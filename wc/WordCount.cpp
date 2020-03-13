@@ -119,6 +119,8 @@ int WordCount::CountDetails()
 			{
 				if ((*ite) == '{' || (*ite) == '}')	//大括号标记为1否则为代码行
 					flag = 1;
+				else if ((*ite) == '/')
+					flag = 3;
 				else
 					flag = 2;
 			}
