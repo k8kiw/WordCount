@@ -16,7 +16,7 @@ WordCount::WordCount(std::string path)
 	//验证打开
 	if (m_File.is_open())
 	{
-		cout << "已打开文件" << m_Path << endl << endl;
+		std::cout << "已打开文件" << m_Path << endl << endl;
 	}
 	else
 	{
@@ -42,7 +42,11 @@ int WordCount::CountCharacters()
 	{
 		//每读取一个字符就计数一次
 		m_File >> c;
-		count++;
+		if (isgraph(c))
+		{
+			count++;
+			c = '\0';
+		}
 	}
 
 	//回到文件头，准备下一次使用
@@ -149,9 +153,9 @@ int WordCount::CountDetails()
 	}	//while
 
 	//计数完毕输出
-	cout << "文件" << m_Path << "的空白行数:" << blankCount << endl;
-	cout << "文件" << m_Path << "的代码行数:" << codeCount << endl;
-	cout << "文件" << m_Path << "的注释行数:" << commentaryCount << endl;
+	std::cout << "文件" << m_Path << "的空白行数:" << blankCount << endl;
+	std::cout << "文件" << m_Path << "的代码行数:" << codeCount << endl;
+	std::cout << "文件" << m_Path << "的注释行数:" << commentaryCount << endl;
 
 	//回到文件头，防止下一次调用的时候无法读取该文件
 	m_File.clear();
